@@ -3,11 +3,11 @@ import { StyleSheet } from 'react-native'
 import {
   TopNavigation,
   TopNavigationAction,
-  Tab,
-  TabBar,
+  BottomNavigationTab,
   Layout,
   Text,
   Icon,
+  BottomNavigation,
 } from '@ui-kitten/components'
 import { DateTime } from 'luxon'
 import { NewsList } from './newsList.component'
@@ -22,10 +22,10 @@ import {
   useCalendar,
   useSchedule,
 } from '@skolplattformen/api-hooks'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { ChildProvider, useChild } from './childContext.component'
 
-const { Navigator, Screen } = createMaterialTopTabNavigator()
+const {Navigator, Screen} = createBottomTabNavigator()
 
 const NewsScreen = () => {
   const child = useChild()
@@ -94,31 +94,31 @@ const NotificationsIcon = (props) => (
 const CalendarIcon = (props) => <Icon {...props} name="calendar-outline" />
 const ClassIcon = (props) => <Icon {...props} name="people-outline" />
 
-const TopTabBar = ({ navigation, state }) => (
-  <TabBar
+const BottomTabBar = ({navigation, state}) => (
+  <BottomNavigation
     selectedIndex={state.index}
     onSelect={(index) => navigation.navigate(state.routeNames[index])}>
-    <Tab
+    <BottomNavigationTab
       title={(props) => <TabTitle {...props}>Nyheter</TabTitle>}
       icon={NewsIcon}
     />
-    <Tab
+    <BottomNavigationTab
       title={(props) => <TabTitle {...props}>Aviseringar</TabTitle>}
       icon={NotificationsIcon}
     />
-    <Tab
+    <BottomNavigationTab
       title={(props) => <TabTitle {...props}>Kalender</TabTitle>}
       icon={CalendarIcon}
     />
-    <Tab
+    <BottomNavigationTab
       title={(props) => <TabTitle {...props}>Klassen</TabTitle>}
       icon={ClassIcon}
     />
-  </TabBar>
+  </BottomNavigation>
 )
 
 const TabNavigator = () => (
-  <Navigator tabBar={(props) => <TopTabBar {...props} />}>
+  <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
     <Screen name="Nyheter" component={NewsScreen} />
     <Screen name="Notifieringar" component={NotificationsScreen} />
     <Screen name="Kalender" component={CalendarScreen} />
@@ -126,7 +126,7 @@ const TabNavigator = () => (
   </Navigator>
 )
 
-export const Child = ({ route, navigation }) => {
+export const Child = ({route, navigation}) => {
   const { child, color } = route.params
 
   const BackIcon = (props) => <Icon {...props} name="arrow-back" />
