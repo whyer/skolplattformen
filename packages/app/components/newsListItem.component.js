@@ -22,9 +22,7 @@ export const NewsListItem = ({item}) => {
         <View style={styles.text}>
           <View>
             <Text category="h5" style={styles.header}>{item.header}</Text>
-            <Text category="s1">
-              {displayDate(item.published || item.modified)}
-            </Text>
+
             <Text
               ellipsizeMode="tail"
               numberOfLines={2}
@@ -33,7 +31,10 @@ export const NewsListItem = ({item}) => {
               {item.intro}
             </Text>
           </View>
-          <Text category="s2">Av: {item.author}</Text>
+          <Text category="c1">
+              {displayDate(item.published || item.modified)}
+            </Text>
+          <Text category="c1">Av: {item.author}</Text>
         </View>
       </View>
     </TouchableOpacity>
