@@ -13,6 +13,10 @@ export const Notification = ({ item }) => {
     locale: 'sv',
   })
 
+  const sharedCookiesEnabled = () => {
+    return item.url && item.url.startsWith('https://start.unikum.net/')
+  }
+
   return (
     <>
       <Card
@@ -31,7 +35,13 @@ export const Notification = ({ item }) => {
       >
         <Text>{item.message}</Text>
       </Card>
-      {isOpen && <ModalWebView url={item.url} onClose={close} />}
+      {isOpen && (
+        <ModalWebView
+          url={item.url}
+          onClose={close}
+          sharedCookiesEnabled={sharedCookiesEnabled()}
+        />
+      )}
     </>
   )
 }
