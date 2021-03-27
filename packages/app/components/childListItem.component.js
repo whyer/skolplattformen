@@ -1,6 +1,7 @@
 import {
   useCalendar,
   useClassmates,
+  useMenu,
   useNews,
   useNotifications,
   useSchedule,
@@ -12,6 +13,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { studentName } from '../utils/peopleHelpers'
 import {
+  BookOpenIcon,
   CalendarOutlineIcon,
   ClassIcon,
   NewsIcon,
@@ -33,6 +35,7 @@ export const ChildListItem = ({ navigation, child, color }) => {
     DateTime.local(),
     DateTime.local().plus({ days: 7 })
   )
+  const { data: menu, status: menuStatus } = useMenu(child)
 
   const notificationsThisWeek = notifications.filter((n) =>
     moment(n.dateCreated).isSame(moment(), 'week')
@@ -137,6 +140,21 @@ export const ChildListItem = ({ navigation, child, color }) => {
         accessoryLeft={CalendarOutlineIcon}
       >
         {`${(notifications || []).length}`}
+      </Button>
+      <Button
+        style={[styles.item, styles[classmatesStatus]]}
+        status="control"
+        size="small"
+        onPress={() =>
+          navigation.navigate('Child', {
+            child,
+            color,
+            initialRouteName: 'Meny',
+          })
+        }
+        accessoryLeft={BookOpenIcon}
+      >
+        Mat
       </Button>
       <Button
         style={[styles.item, styles[classmatesStatus]]}

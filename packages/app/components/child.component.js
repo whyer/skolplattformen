@@ -14,8 +14,10 @@ import { studentName } from '../utils/peopleHelpers'
 import { Calendar } from './calendar.component'
 import { ChildProvider } from './childContext.component'
 import { Classmates } from './classmates.component'
+import { Menu } from './menu.component'
 import {
   BackIcon,
+  BookOpenIcon,
   CalendarOutlineIcon,
   ClassIcon,
   NewsIcon,
@@ -46,6 +48,14 @@ const CalendarScreen = () => {
   return (
     <Layout>
       <Calendar />
+    </Layout>
+  )
+}
+
+const MenuScreen = () => {
+  return (
+    <Layout>
+      <Menu />
     </Layout>
   )
 }
@@ -82,6 +92,10 @@ const BottomTabBar = ({ navigation, state }) => (
       icon={CalendarOutlineIcon}
     />
     <BottomNavigationTab
+      title={(props) => <TabTitle {...props}>Veckans meny</TabTitle>}
+      icon={BookOpenIcon}
+    />
+    <BottomNavigationTab
       title={(props) => <TabTitle {...props}>Klassen</TabTitle>}
       icon={ClassIcon}
     />
@@ -96,6 +110,7 @@ const TabNavigator = ({ initialRouteName = 'Nyheter' }) => (
     <Screen name="Nyheter" component={NewsScreen} />
     <Screen name="Notifieringar" component={NotificationsScreen} />
     <Screen name="Kalender" component={CalendarScreen} />
+    <Screen name="Meny" component={MenuScreen} />
     <Screen name="Klassen" component={ClassmatesScreen} />
   </Navigator>
 )
