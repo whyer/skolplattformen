@@ -35,13 +35,30 @@ export const ChildListItem = ({ navigation, child, color }) => {
   )
 
   const notificationsThisWeek = notifications.filter((n) =>
-    moment(n).isSame('week')
+    moment(n.dateCreated).isSame(moment(), 'week')
+  )
+
+  const newsThisWeek = news.filter((n) =>
+    moment(n.published).isSame(moment(), 'week')
   )
 
   const scheduleAndCalendarThisWeek = [
     ...(calendar ?? []),
     ...(schedule ?? []),
-  ].filter((a) => moment(a.startDate).isSame('week'))
+  ].filter((a) =>
+    moment(a.startDate).isBetween(
+      moment().add(-7, 'days'),
+      moment().add(7, 'days')
+    )
+  )
+
+  const displayDate = (date) => {
+    console.log(date)
+    return DateTime.fromISO(date).toRelative({
+      locale: 'sv',
+      style: 'long',
+    })
+  }
 
   const getClassName = () => {
     // hack: we can find the class name (ex. 8C) from the classmates. let's pick the first one and select theirs class
@@ -149,22 +166,25 @@ export const ChildListItem = ({ navigation, child, color }) => {
       onPress={() => navigation.navigate('Child', { child, color })}
     >
       {scheduleAndCalendarThisWeek.slice(0, 3).map((calendarItem, i) => (
-        <Text
-          appearance="hint"
-          category="c1"
-          key={i}
-          style={{ textColor: styles.loaded(notificationsStatus) }}
-        >
-          {`${calendarItem.title}`}
+        <Text appearance="hint" category="c1" key={i}>
+          {`${calendarItem.title} (${displayDate(calendarItem.startDate)})`}
         </Text>
       ))}
       {notificationsThisWeek.map((notification, i) => (
         <Text appearance="hint" category="c1" key={i}>
-          {`${notification.message}`}
+          {`Avisering: ${notification.message} (${displayDate(
+            notification.dateCreated
+          )})`}
+        </Text>
+      ))}
+      {newsThisWeek.map((newsItem, i) => (
+        <Text appearance="hint" category="c1" key={i}>
+          {`Nyhet: ${newsItem.header} (${displayDate(newsItem.published)})`}
         </Text>
       ))}
       {scheduleAndCalendarThisWeek.length ||
-      notificationsThisWeek.length ? null : (
+      notificationsThisWeek.length ||
+      newsThisWeek.length ? null : (
         <Text appearance="hint" category="c1">
           Inga nya inlägg denna vecka.
         </Text>
